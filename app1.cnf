@@ -1,0 +1,56 @@
+[server default]
+
+# 管理MHA的用户名和密码
+user=mha                                  
+password=mha  
+
+# 连接SSH的账号
+ssh_user=root
+
+# 复制的账号和密码
+repl_user=repl    
+repl_password=repl
+
+# 监控时间间隔,单位是秒,连续3次ping失败后,认为主机宕机,自动进行failover    
+ping_interval=1
+
+# MHA manager使用的工作目录
+manager_workdir=/usr/local/mha
+# MHA manager生成日志的位置
+manager_log=/var/log/mha/manager.log
+# 设置远端发生切换时保存binlog的具体位置 
+remote_workdir=/data  
+
+# 脚本配置
+# failover 切换脚本
+#master_ip_failover_script=/usr/local/scripts/master_ip_failover
+# 手动切换脚本
+#master_ip_online_change_script=/usr/local/scripts/master_ip_online_change
+
+
+
+[server1]
+hostname=172.16.133.204       
+ssh_port=22           
+port=3306
+# 主库的binlog位置          
+master_binlog_dir=/data/mysql   
+# 如果设置为1,表示优先成为master
+candidate_master=1            
+
+[server2]
+hostname=172.16.133.205
+ssh_port=22            
+port=3306            
+master_binlog_dir=/data/mysql   
+candidate_master=1
+# 默认落后100M的relay log时,MHA不会选择该节点,这个参数是忽律复制延时
+check_repl_delay=0        
+
+[server3]    
+hostname=172.16.133.206
+ssh_port=22        
+port=3306        
+master_binlog_dir=/data/mysql/log
+# 设置该节点永远不会成为新的master
+no_master=1
