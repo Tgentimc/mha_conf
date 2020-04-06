@@ -26,7 +26,8 @@ remote_workdir=/data
 #master_ip_failover_script=/usr/local/scripts/master_ip_failover
 # 手动切换脚本
 #master_ip_online_change_script=/usr/local/scripts/master_ip_online_change
-
+# 切换后发送报警的脚本
+#report_script=/usr/local/bin/send_report
 
 
 [server1]
